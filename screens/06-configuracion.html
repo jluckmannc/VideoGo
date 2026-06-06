@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VídeoGo · Configuración</title>
+<style>
+:root {
+  --bg: #0a0a14;
+  --surface: #12121e;
+  --surface-elevated: #1a1a2a;
+  --fg: #f1f5f9;
+  --muted: #94a3b8;
+  --border: rgba(255,255,255,0.06);
+  --accent: #1d4ed8;
+  --accent-on: #ffffff;
+  --accent-hover: #2563eb;
+  --accent-active: #1e40af;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --punch-hole: #000000;
+  --font-display: "Geist","Geist Sans",-apple-system,system-ui,"Segoe UI",Arial,sans-serif;
+  --font-body: "Geist","Geist Sans",-apple-system,system-ui,"Segoe UI",Arial,sans-serif;
+  --font-mono: "Fira Code",ui-monospace,"SF Mono","JetBrains Mono",Menlo,Monaco,Consolas,monospace;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 9999px;
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease-standard: cubic-bezier(0.2,0,0,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;
+  background:#05050e;font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+}
+.phone{
+  width:390px;height:844px;background:var(--bg);border-radius:28px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);
+  display:flex;flex-direction:column;position:relative;
+}
+.status-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 24px 8px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);flex-shrink:0;
+}
+.status-icons{display:flex;gap:6px;align-items:center}
+.status-icons svg{width:16px;height:16px;stroke:rgba(255,255,255,0.9)}
+.punch-hole{
+  width:10px;height:10px;background:var(--punch-hole);border-radius:50%;
+  position:absolute;top:16px;left:50%;margin-left:-5px;z-index:3;
+}
+.page-header{
+  display:flex;align-items:center;gap:12px;padding:4px 20px 8px;flex-shrink:0;
+}
+.page-header .back-btn{
+  background:none;border:none;padding:4px;cursor:pointer;color:rgba(255,255,255,0.7);display:flex;
+  transition:color var(--motion-fast) var(--ease-standard);
+}
+.page-header .back-btn:hover{color:white}
+.page-header .back-btn svg{width:22px;height:22px}
+.page-header h1{
+  font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;margin:0;color:var(--fg);
+}
+
+.settings-scroll{
+  flex:1;overflow-y:scroll;padding:4px 16px 12px;display:flex;flex-direction:column;gap:8px;
+  scrollbar-width:none;
+}
+.settings-scroll::-webkit-scrollbar{display:none;width:0;height:0}
+
+.settings-group{
+  background:var(--surface);border-radius:var(--radius-lg);padding:4px 16px 8px;
+  border:1px solid var(--border);
+}
+.settings-group .group-title{
+  font-size:11px;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.05em;padding:14px 0 4px;
+}
+.setting-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;gap:12px;
+}
+.setting-item+.setting-item{border-top:1px solid var(--border)}
+.setting-item .setting-info{flex:1;min-width:0}
+.setting-item .setting-info .label{
+  font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0;
+}
+.setting-item .setting-info .desc{
+  font-size:12px;color:var(--muted);margin:2px 0 0;
+}
+.seg-dur-selector{display:flex;gap:6px}
+.seg-dur-opt{
+  display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:transparent;font:inherit;
+  font-size:12px;font-weight:500;cursor:pointer;
+  color:var(--muted);transition:all var(--motion-fast) var(--ease-standard);
+  font-family:var(--font-mono);font-variant-numeric:tabular-nums;
+}
+.seg-dur-opt:hover{border-color:rgba(255,255,255,0.15);color:var(--fg)}
+.seg-dur-opt.active{background:rgba(29,78,216,0.12);border-color:var(--accent);color:var(--fg)}
+.seg-dur-opt.active::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.quality-selector{display:flex;gap:6px}
+.quality-opt{
+  padding:6px 14px;border-radius:var(--radius-pill);
+  border:1px solid var(--border);background:transparent;font:inherit;
+  font-size:12px;font-weight:500;cursor:pointer;
+  color:var(--muted);transition:all var(--motion-fast) var(--ease-standard);
+}
+.quality-opt:hover{border-color:rgba(255,255,255,0.15);color:var(--fg)}
+.quality-opt.active{background:var(--accent);color:var(--accent-on);border-color:var(--accent)}
+.toggle{position:relative;width:44px;height:26px;flex-shrink:0;cursor:pointer}
+.toggle input{position:absolute;opacity:0;width:0;height:0}
+.toggle .slider{
+  position:absolute;inset:0;background:rgba(255,255,255,0.08);
+  border-radius:999px;transition:background var(--motion-base) var(--ease-standard);
+}
+.toggle .slider::before{
+  content:'';position:absolute;width:22px;height:22px;
+  left:2px;bottom:2px;background:white;border-radius:50%;
+  transition:transform var(--motion-base) var(--ease-standard);
+  box-shadow:0 1px 3px rgba(0,0,0,0.3);
+}
+.toggle input:checked+.slider{background:var(--accent)}
+.toggle input:checked+.slider::before{transform:translateX(18px)}
+.platform-list{display:flex;flex-direction:column;gap:6px}
+.platform-opt{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;
+  transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard);
+}
+.platform-opt:hover{border-color:rgba(29,78,216,0.3);background:rgba(255,255,255,0.02)}
+.platform-opt.active{border-color:var(--accent);background:rgba(29,78,216,0.08)}
+.platform-opt .radio-circle{
+  width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.platform-opt.active .radio-circle{border-color:var(--accent)}
+.platform-opt.active .radio-circle::after{
+  content:'';width:10px;height:10px;border-radius:50%;background:var(--accent);
+}
+.platform-opt .plat-info{flex:1}
+.platform-opt .plat-name{font-size:var(--text-sm);font-weight:500;color:var(--fg)}
+.platform-opt .plat-desc{font-size:11px;color:var(--muted)}
+.platform-opt svg{width:20px;height:20px;color:var(--muted)}
+.storage-info{display:flex;flex-direction:column;gap:8px;padding:4px 0}
+.storage-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.storage-bar .fill{width:32%;height:100%;background:var(--accent);border-radius:2px}
+.storage-text{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.storage-text .num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.bottom-nav{
+  display:flex;border-top:1px solid rgba(255,255,255,0.04);
+  padding:8px 0 10px;flex-shrink:0;background:rgba(0,0,0,0.35);backdrop-filter:blur(12px);
+}
+.bottom-nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;
+  cursor:pointer;color:rgba(255,255,255,0.35);
+  transition:color var(--motion-fast) var(--ease-standard);
+  border:none;background:none;font-family:inherit;
+}
+.bottom-nav-item.active{color:white}
+.bottom-nav-item.active svg{color:white}
+.bottom-nav-item svg{width:24px;height:24px;color:rgba(255,255,255,0.35)}
+.bottom-nav-item span{font-size:10px;font-weight:500}
+.android-nav{
+  display:flex;justify-content:center;gap:24px;
+  padding:6px 20px 8px;flex-shrink:0;
+  background:rgba(0,0,0,0.2);backdrop-filter:blur(12px);
+}
+.android-nav svg{width:16px;height:16px;color:rgba(255,255,255,0.35)}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="punch-hole"></div>
+  <div class="status-bar">
+    <span class="time">15:28</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M1 9l4 4-4 4"/><path d="M7 17l4-4-4-4"/><rect x="11" y="5" width="10" height="14" rx="2"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h12"/></svg>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <button class="back-btn" onclick="window.location.href='../index.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <h1>Configuración</h1>
+  </div>
+
+  <div class="settings-scroll">
+    <div class="settings-group">
+      <div class="group-title">Video</div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <p class="label">Calidad de grabación</p>
+          <p class="desc">Baja · Mediana · Alta</p>
+        </div>
+        <div class="quality-selector">
+          <button class="quality-opt">Baja</button>
+          <button class="quality-opt active">Media</button>
+          <button class="quality-opt">Alta</button>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <p class="label">Duración por segmento</p>
+          <p class="desc">Corte automático si se supera</p>
+        </div>
+        <div class="seg-dur-selector">
+          <button class="seg-dur-opt">5m</button>
+          <button class="seg-dur-opt active">10m</button>
+          <button class="seg-dur-opt">15m</button>
+          <button class="seg-dur-opt">20m</button>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <p class="label">Modo minimizado</p>
+          <p class="desc">Burbuja flotante al salir</p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" checked />
+          <div class="slider"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="group-title">Respaldo en la nube</div>
+      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+          <div class="setting-info">
+            <p class="label">Subida automática</p>
+            <p class="desc">Respaldar al finalizar</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <div class="slider"></div>
+          </label>
+        </div>
+        <div class="platform-list">
+          <div class="platform-opt active">
+            <div class="radio-circle"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg>
+            <div class="plat-info">
+              <div class="plat-name">Google Drive</div>
+              <div class="plat-desc">2.1 GB disponibles</div>
+            </div>
+          </div>
+          <div class="platform-opt">
+            <div class="radio-circle"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 9v8"/><path d="M8 13h8"/></svg>
+            <div class="plat-info">
+              <div class="plat-name">Dropbox</div>
+              <div class="plat-desc">No conectado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="group-title">Almacenamiento</div>
+      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:6px;padding-bottom:18px">
+        <div style="display:flex;justify-content:space-between">
+          <p class="label" style="font-size:var(--text-sm);font-weight:500;margin:0">Espacio usado</p>
+          <span class="num" style="font-size:12px;color:var(--muted)">3.2 GB / 10 GB</span>
+        </div>
+        <div class="storage-bar"><div class="fill"></div></div>
+        <div class="storage-text">
+          <span>Vídeos: <span class="num">2.8 GB</span></span>
+          <span>Otros: <span class="num">0.4 GB</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="bottom-nav-item" onclick="window.location.href='../index.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span>Inicio</span>
+    </button>
+    <button class="bottom-nav-item" onclick="window.location.href='04-historial.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Historial</span>
+    </button>
+    <button class="bottom-nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Ajustes</span>
+    </button>
+  </div>
+
+  <div class="android-nav">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="15 3 6 12 15 21 15 21"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="10"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9 21 18 12 9 3 9 3"/></svg>
+  </div>
+</div>
+</body>
+</html>
