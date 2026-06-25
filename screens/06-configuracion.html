@@ -363,5 +363,42 @@ body{
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9 21 18 12 9 3 9 3"/></svg>
   </div>
 </div>
+
+<script>
+// Segment duration settings
+document.addEventListener('DOMContentLoaded', () => {
+  const segDurButtons = document.querySelectorAll('.seg-dur-opt');
+
+  // Load saved duration from localStorage
+  const savedDuration = localStorage.getItem('videogo_segment_duration') || '10';
+  segDurButtons.forEach(btn => {
+    const duration = btn.textContent.replace('m', '');
+    btn.classList.toggle('active', duration === savedDuration);
+  });
+
+  // Handle segment duration selection
+  segDurButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      segDurButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const duration = btn.textContent.replace('m', '');
+      localStorage.setItem('videogo_segment_duration', duration);
+
+      // Update Recorder if available
+      if (window.Recorder) {
+        Recorder.segmentDurationMinutes = parseInt(duration);
+      }
+    });
+  });
+
+  // Back button
+  const backBtn = document.querySelector('.back-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      window.location.href = '../index.html';
+    });
+  }
+});
+</script>
 </body>
 </html>

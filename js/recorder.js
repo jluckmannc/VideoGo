@@ -9,6 +9,7 @@ const Recorder = {
   pausedTime: 0,
   segments: 1,
   intervalId: null,
+  segmentDurationMinutes: 10, // Duración por segmento (configurable)
 
   /**
    * Iniciar grabación
@@ -19,6 +20,12 @@ const Recorder = {
     this.isRecording = true;
     this.startTime = Date.now() - this.pausedTime;
     this.segments = 1;
+
+    // Cargar duración por segmento desde configuración
+    const savedDuration = localStorage.getItem('videogo_segment_duration');
+    if (savedDuration) {
+      this.segmentDurationMinutes = parseInt(savedDuration);
+    }
 
     // Persistir estado
     Storage.setCurrentRecording({
