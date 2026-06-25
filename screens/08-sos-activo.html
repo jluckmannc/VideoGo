@@ -63,11 +63,16 @@ body{
   background:linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
   padding:16px 20px;flex-shrink:0;
   display:flex;align-items:center;justify-content:space-between;
-  animation:header-pulse 2s ease-in-out infinite;
+  animation:header-pulse 2s ease-in-out infinite, gradient-shift 4s ease-in-out infinite;
+  box-shadow:0 4px 16px rgba(220,38,38,0.4);
 }
 @keyframes header-pulse {
   0%,100%{opacity:1}
-  50%{opacity:0.88}
+  50%{opacity:0.85}
+}
+@keyframes gradient-shift {
+  0%,100%{background:linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%)}
+  50%{background:linear-gradient(135deg, #e63232 0%, #a02020 100%)}
 }
 .header-title{
   display:flex;flex-direction:column;gap:2px;
@@ -115,7 +120,7 @@ body{
   width:24px;height:24px;border-radius:50%;
   background:var(--success);border:1.5px solid var(--success);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  opacity:0;animation:check-pop 500ms cubic-bezier(0.34,1.56,0.64,1) forwards;
+  opacity:0;animation:check-pop 500ms cubic-bezier(0.34,1.56,0.64,1) forwards, check-glow 600ms ease-out forwards;
 }
 .contact-check svg{width:14px;height:14px;color:white;stroke-width:3}
 .contact-check.delay1{animation-delay:200ms}
@@ -126,6 +131,11 @@ body{
   50%{transform:scale(1.2)}
   70%{transform:scale(0.95)}
   100%{transform:scale(1);opacity:1}
+}
+@keyframes check-glow {
+  0%{box-shadow:0 0 0 rgba(22,163,74,0.8)}
+  50%{box-shadow:0 0 16px rgba(22,163,74,0.6)}
+  100%{box-shadow:0 0 0 rgba(22,163,74,0)}
 }
 .contact-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .contact-time{
@@ -179,11 +189,16 @@ body{
   background:rgba(220,38,38,0.15);
   border-color:var(--danger);
   box-shadow:0 0 16px rgba(220,38,38,0.4),inset 0 -2px 8px rgba(0,0,0,0.2);
+  animation:breathing 2s ease-in-out infinite;
 }
 .alarm-btn:active{transform:scale(0.92)}
 .alarm-btn.active{
   background:var(--danger);color:white;border-color:white;
   box-shadow:0 0 24px rgba(220,38,38,0.6),inset 0 -2px 8px rgba(0,0,0,0.3);
+}
+@keyframes breathing {
+  0%,100%{box-shadow:0 0 16px rgba(220,38,38,0.4),inset 0 -2px 8px rgba(0,0,0,0.2)}
+  50%{box-shadow:0 0 24px rgba(220,38,38,0.6),inset 0 -2px 8px rgba(0,0,0,0.2)}
 }
 .alarm-icon{
   width:40px;height:40px;display:flex;align-items:center;justify-content:center;

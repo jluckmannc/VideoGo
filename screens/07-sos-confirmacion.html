@@ -140,8 +140,8 @@ body{
 }
 .progress-bar{
   height:100%;background:linear-gradient(90deg, var(--danger) 0%, #ff0000 100%);border-radius:3px;
-  transform-origin:left;transform:scaleX(0);transition:transform 100ms linear;
-  box-shadow:0 0 8px rgba(220,38,38,0.5);
+  transform-origin:left;transform:scaleX(0);transition:transform 100ms cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 0 12px rgba(220,38,38,0.6), 0 0 24px rgba(220,38,38,0.3);
 }
 .confirm-text{
   font-size:12px;color:var(--muted);text-align:center;margin:0;

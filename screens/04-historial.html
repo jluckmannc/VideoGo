@@ -87,6 +87,13 @@ body{
   cursor:pointer;align-items:center;
 }
 .history-item:hover{background:var(--surface-elevated);border-color:rgba(29,78,216,0.25)}
+.history-item[style*="gradient(135deg,rgba(220,38,38"]{
+  animation:sos-card-pulse 3s ease-in-out infinite;
+}
+@keyframes sos-card-pulse {
+  0%,100%{opacity:1}
+  50%{opacity:0.92}
+}
 .thumb{
   width:72px;height:54px;border-radius:var(--radius-sm);
   background:linear-gradient(135deg,#1e1e32,#0f0f1e);
