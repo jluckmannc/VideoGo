@@ -62,7 +62,7 @@ body{
 }
 @keyframes header-pulse {
   0%,100%{opacity:1}
-  50%{opacity:0.85}
+  50%{opacity:0.88}
 }
 .header-title{
   display:flex;flex-direction:column;gap:2px;
@@ -107,18 +107,19 @@ body{
   display:flex;align-items:center;gap:6px;flex:1;min-width:0;
 }
 .contact-check{
-  width:20px;height:20px;border-radius:50%;
-  background:var(--danger-light);border:1.5px solid var(--danger);
+  width:24px;height:24px;border-radius:50%;
+  background:var(--success);border:1.5px solid var(--success);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   opacity:0;animation:check-pop 500ms cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
-.contact-check svg{width:12px;height:12px;color:var(--danger)}
+.contact-check svg{width:14px;height:14px;color:white;stroke-width:3}
 .contact-check.delay1{animation-delay:200ms}
 .contact-check.delay2{animation-delay:400ms}
 .contact-check.delay3{animation-delay:600ms}
 @keyframes check-pop {
   0%{transform:scale(0);opacity:0}
-  70%{transform:scale(1.15)}
+  50%{transform:scale(1.2)}
+  70%{transform:scale(0.95)}
   100%{transform:scale(1);opacity:1}
 }
 .contact-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -156,8 +157,8 @@ body{
 }
 .alarm-section{
   display:flex;flex-direction:column;gap:12px;
-  padding:16px;background:linear-gradient(135deg, var(--danger-light) 0%, rgba(220,38,38,0.08) 100%);
-  border-radius:var(--radius-lg);border:1px solid var(--danger-light);
+  padding:16px;background:linear-gradient(135deg, rgba(220,38,38,0.08) 0%, rgba(220,38,38,0.04) 100%);
+  border-radius:var(--radius-lg);border:1px solid rgba(220,38,38,0.2);
 }
 .alarm-btn{
   width:120px;height:120px;border-radius:50%;border:3px solid var(--danger);
@@ -167,10 +168,17 @@ body{
   position:relative;
   font-family:inherit;color:var(--danger);font-weight:600;font-size:12px;
   text-align:center;padding:12px;
+  box-shadow:0 0 0 1px rgba(220,38,38,0.3),inset 0 -2px 8px rgba(0,0,0,0.2);
+}
+.alarm-btn:hover{
+  background:rgba(220,38,38,0.15);
+  border-color:var(--danger);
+  box-shadow:0 0 16px rgba(220,38,38,0.4),inset 0 -2px 8px rgba(0,0,0,0.2);
 }
 .alarm-btn:active{transform:scale(0.92)}
 .alarm-btn.active{
   background:var(--danger);color:white;border-color:white;
+  box-shadow:0 0 24px rgba(220,38,38,0.6),inset 0 -2px 8px rgba(0,0,0,0.3);
 }
 .alarm-icon{
   width:40px;height:40px;display:flex;align-items:center;justify-content:center;
@@ -185,8 +193,8 @@ body{
 .alarm-btn.active .alarm-wave:nth-child(2){animation-delay:0.3s}
 .alarm-btn.active .alarm-wave:nth-child(3){animation-delay:0.6s}
 @keyframes wave-expand {
-  0%{transform:translate(-50%,-50%) scale(1);opacity:1}
-  100%{transform:translate(-50%,-50%) scale(2);opacity:0}
+  0%{transform:translate(-50%,-50%) scale(0.8);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}
 }
 .action-buttons{
   display:flex;flex-direction:column;gap:10px;padding:0 16px 16px;
@@ -196,9 +204,51 @@ body{
   cursor:pointer;border-radius:var(--radius-lg);font-family:inherit;
   font-size:var(--text-base);font-weight:600;color:var(--danger);
   transition:all var(--motion-base) var(--ease-standard);
+  display:none;
 }
 .cancel-sos-btn:hover{background:var(--danger-light)}
 .cancel-sos-btn:active{transform:scale(0.98)}
+/* BOTÓN CANCELAR SOS FLOTANTE - SIEMPRE VISIBLE */
+.cancel-sos-btn-floating{
+  position:fixed;
+  bottom:72px;
+  right:20px;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:var(--danger);
+  color:white;
+  border:none;
+  font-size:9px;
+  font-weight:600;
+  box-shadow:0 4px 12px rgba(220,38,38,0.3),0 0 0 1px rgba(220,38,38,0.5);
+  z-index:100;
+  cursor:pointer;
+  transition:opacity var(--motion-base),transform var(--motion-fast);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:4px;
+}
+.cancel-sos-btn-floating:hover{
+  opacity:0.9;
+  transform:scale(1.05);
+  box-shadow:0 6px 16px rgba(220,38,38,0.4),0 0 0 1px rgba(220,38,38,0.5);
+}
+.cancel-sos-btn-floating:active{
+  transform:scale(0.92);
+}
+.cancel-sos-btn-floating::before{
+  content:'✕';
+  font-size:20px;
+  font-weight:bold;
+}
+.cancel-sos-btn-floating::after{
+  content:'CANCELAR';
+  font-size:8px;
+  letter-spacing:0.05em;
+}
 .android-nav{
   display:flex;justify-content:center;gap:24px;
   padding:6px 20px 8px;flex-shrink:0;
@@ -316,6 +366,9 @@ body{
     <button class="cancel-sos-btn" id="cancelBtn">Cancelar Emergencia</button>
   </div>
 
+  <!-- Botón Cancelar SOS Flotante (SIEMPRE VISIBLE) -->
+  <button class="cancel-sos-btn-floating" id="cancelBtnFloating" title="Cancelar emergencia"></button>
+
   <!-- Dialog custom para confirmar cancelación -->
   <div class="dialog-overlay" id="cancelDialog">
     <div class="cancel-dialog">
@@ -347,6 +400,7 @@ const locationUpdate = document.getElementById('locationUpdate');
 const alarmBtn = document.getElementById('alarmBtn');
 const alarmLabel = document.getElementById('alarmLabel');
 const cancelBtn = document.getElementById('cancelBtn');
+const cancelBtnFloating = document.getElementById('cancelBtnFloating');
 const cancelDialog = document.getElementById('cancelDialog');
 const dialogKeepBtn = document.getElementById('dialogKeepBtn');
 const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
@@ -456,6 +510,10 @@ alarmBtn.addEventListener('click', () => {
 
 // Mostrar diálogo de confirmación
 cancelBtn.addEventListener('click', () => {
+  cancelDialog.classList.add('active');
+});
+
+cancelBtnFloating.addEventListener('click', () => {
   cancelDialog.classList.add('active');
 });
 
