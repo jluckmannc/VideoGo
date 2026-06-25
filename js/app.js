@@ -35,7 +35,7 @@ const App = {
       Storage.setContacts(Storage.DEFAULT_CONTACTS);
     }
     if (!localStorage.getItem('videogo_recordings')) {
-      Storage.setRecordings([]);
+      localStorage.setItem('videogo_recordings', JSON.stringify([]));
     }
     if (!localStorage.getItem('videogo_sos_events')) {
       localStorage.setItem('videogo_sos_events', JSON.stringify([]));

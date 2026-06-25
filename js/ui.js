@@ -114,6 +114,27 @@ const UI = {
   },
 
   /**
+   * Mostrar diálogo de confirmación (reemplaza confirm() nativo)
+   * Retorna una Promise que se resuelve con true/false
+   */
+  showConfirm(message) {
+    return new Promise((resolve) => {
+      this.showModal('Confirmación', message, [
+        {
+          label: 'Cancelar',
+          variant: 'secondary',
+          onClick: () => resolve(false)
+        },
+        {
+          label: 'Confirmar',
+          variant: 'primary',
+          onClick: () => resolve(true)
+        }
+      ]);
+    });
+  },
+
+  /**
    * Mostrar loading spinner
    */
   showLoading(show = true) {

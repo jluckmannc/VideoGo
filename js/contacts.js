@@ -68,9 +68,10 @@ const Contacts = {
       });
 
       container.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', async (e) => {
           const id = e.currentTarget.dataset.id;
-          if (confirm('¿Eliminar este contacto?')) {
+          const confirmed = await UI.showConfirm('¿Eliminar este contacto?');
+          if (confirmed) {
             Storage.deleteContact(id);
             this.renderList(containerId, options);
             if (onDelete) onDelete(id);
