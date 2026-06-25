@@ -205,25 +205,24 @@ body{
       <div class="group-title">Video</div>
       <div class="setting-item">
         <div class="setting-info">
-          <p class="label">Calidad de grabación</p>
-          <p class="desc">Baja · Mediana · Alta</p>
+          <p class="label">Calidad de vídeo</p>
+          <p class="desc">Batería · Automático · Máxima</p>
         </div>
         <div class="quality-selector">
-          <button class="quality-opt">Baja</button>
-          <button class="quality-opt active">Media</button>
-          <button class="quality-opt">Alta</button>
+          <button class="quality-opt" data-quality="battery">Batería</button>
+          <button class="quality-opt active" data-quality="auto">Automático</button>
+          <button class="quality-opt" data-quality="max">Máxima</button>
         </div>
       </div>
       <div class="setting-item">
         <div class="setting-info">
-          <p class="label">Duración por segmento</p>
-          <p class="desc">Corte automático si se supera</p>
+          <p class="label">Corte automático</p>
+          <p class="desc">Divide en segmentos</p>
         </div>
         <div class="seg-dur-selector">
-          <button class="seg-dur-opt">5m</button>
-          <button class="seg-dur-opt active">10m</button>
-          <button class="seg-dur-opt">15m</button>
-          <button class="seg-dur-opt">20m</button>
+          <button class="seg-dur-opt" data-duration="10">10m</button>
+          <button class="seg-dur-opt active" data-duration="15">15m</button>
+          <button class="seg-dur-opt" data-duration="30">30m</button>
         </div>
       </div>
       <div class="setting-item">
@@ -239,8 +238,19 @@ body{
     </div>
 
     <div class="settings-group">
-      <div class="group-title">Respaldo en la nube</div>
-      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:12px">
+      <div class="group-title">Almacenamiento y respaldo</div>
+      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:6px;padding-bottom:12px">
+        <div style="display:flex;justify-content:space-between">
+          <p class="label" style="font-size:var(--text-sm);font-weight:500;margin:0">Espacio usado</p>
+          <span class="num" style="font-size:12px;color:var(--muted)">3.2 GB / 10 GB</span>
+        </div>
+        <div class="storage-bar"><div class="fill"></div></div>
+        <div class="storage-text">
+          <span>Vídeos: <span class="num">2.8 GB</span></span>
+          <span>Otros: <span class="num">0.4 GB</span></span>
+        </div>
+      </div>
+      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:12px;padding-top:12px;border-top:1px solid var(--border)">
         <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
           <div class="setting-info">
             <p class="label">Subida automática</p>
@@ -273,21 +283,6 @@ body{
     </div>
 
     <div class="settings-group">
-      <div class="group-title">Almacenamiento</div>
-      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:6px;padding-bottom:18px">
-        <div style="display:flex;justify-content:space-between">
-          <p class="label" style="font-size:var(--text-sm);font-weight:500;margin:0">Espacio usado</p>
-          <span class="num" style="font-size:12px;color:var(--muted)">3.2 GB / 10 GB</span>
-        </div>
-        <div class="storage-bar"><div class="fill"></div></div>
-        <div class="storage-text">
-          <span>Vídeos: <span class="num">2.8 GB</span></span>
-          <span>Otros: <span class="num">0.4 GB</span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="settings-group">
       <div class="group-title">Seguridad · Red de confianza</div>
       <div class="setting-item">
         <div class="setting-info">
@@ -299,47 +294,30 @@ body{
           <div class="slider"></div>
         </label>
       </div>
-      <div class="setting-item">
-        <div class="setting-info">
-          <p class="label">Compartir ubicación</p>
-          <p class="desc">Con tus contactos de confianza</p>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" checked />
-          <div class="slider"></div>
-        </label>
-      </div>
-      <div class="setting-item">
-        <div class="setting-info">
-          <p class="label">Alarma sonora</p>
-          <p class="desc">Activar al modo emergencia</p>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" checked />
-          <div class="slider"></div>
-        </label>
-      </div>
-      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:12px;padding-top:4px">
+      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:12px">
         <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
-          <p class="label" style="margin:0">Mis contactos de confianza</p>
+          <div class="setting-info">
+            <p class="label">Compartir ubicación</p>
+            <p class="desc">Con tus contactos de confianza</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" checked id="location-toggle" />
+            <div class="slider"></div>
+          </label>
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border-radius:var(--radius-md);border:1px solid var(--border)">
-            <div style="font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0">María García</div>
-            <div style="font-size:11px;color:var(--muted);margin:2px 0 0">Pareja · +54 11 2222 3333</div>
-          </div>
-          <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border-radius:var(--radius-md);border:1px solid var(--border)">
-            <div style="font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0">Pedro López</div>
-            <div style="font-size:11px;color:var(--muted);margin:2px 0 0">Familiar · +54 11 3333 4444</div>
-          </div>
-          <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border-radius:var(--radius-md);border:1px solid var(--border)">
-            <div style="font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0">Ana Martínez</div>
-            <div style="font-size:11px;color:var(--muted);margin:2px 0 0">Amiga · +54 11 4444 5555</div>
-          </div>
+        <div style="display:flex;gap:6px" class="location-freq-selector">
+          <button class="seg-dur-opt" data-location-freq="10">Cada 10s</button>
+          <button class="seg-dur-opt active" data-location-freq="30">Cada 30s</button>
+          <button class="seg-dur-opt" data-location-freq="60">Cada 60s</button>
         </div>
-        <button onclick="window.location.href='06a-sos-contactos.html'" style="padding:10px;border:1px solid rgba(255,255,255,0.15);background:transparent;border-radius:var(--radius-md);color:var(--fg);cursor:pointer;font-size:var(--text-sm);font-weight:500;font-family:inherit;transition:all var(--motion-fast) var(--ease-standard)" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='transparent'">Editar contactos</button>
       </div>
-    </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <p class="label">Contactos de confianza</p>
+          <p class="desc">Agregar, editar o eliminar</p>
+        </div>
+        <button onclick="window.location.href='06a-sos-contactos.html'" style="padding:10px 16px;border:1px solid var(--accent);background:rgba(29,78,216,0.08);border-radius:var(--radius-md);color:var(--accent);cursor:pointer;font-size:var(--text-sm);font-weight:600;font-family:inherit;transition:all var(--motion-fast) var(--ease-standard)">Editar →</button>
+      </div>
   </div>
 
   <div class="bottom-nav">
@@ -365,29 +343,112 @@ body{
 </div>
 
 <script>
-// Segment duration settings
+// Show toast notification
+function showToast(message, duration = 1500) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(22, 163, 74, 0.95);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideUp 0.3s ease-out;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'slideDown 0.3s ease-out';
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+// Add keyframe animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes slideDown {
+    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+    to { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  }
+`;
+document.head.appendChild(style);
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Segment duration settings
   const segDurButtons = document.querySelectorAll('.seg-dur-opt');
 
   // Load saved duration from localStorage
   const savedDuration = localStorage.getItem('videogo_segment_duration') || '10';
   segDurButtons.forEach(btn => {
-    const duration = btn.textContent.replace('m', '');
-    btn.classList.toggle('active', duration === savedDuration);
+    if (!btn.closest('.location-freq-selector')) {
+      const duration = btn.textContent.replace('m', '');
+      btn.classList.toggle('active', duration === savedDuration);
+    }
   });
 
-  // Handle segment duration selection
+  // Handle segment duration selection (for corte automático)
   segDurButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      segDurButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const duration = btn.textContent.replace('m', '');
-      localStorage.setItem('videogo_segment_duration', duration);
+    if (!btn.closest('.location-freq-selector')) {
+      btn.addEventListener('click', () => {
+        const otherSegButtons = document.querySelectorAll('.seg-dur-opt:not(.location-freq-selector .seg-dur-opt)');
+        otherSegButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const duration = btn.textContent.replace('m', '');
+        localStorage.setItem('videogo_segment_duration', duration);
+        showToast('✓ Configuración guardada');
 
-      // Update Recorder if available
-      if (window.Recorder) {
-        Recorder.segmentDurationMinutes = parseInt(duration);
-      }
+        // Update Recorder if available
+        if (window.Recorder) {
+          Recorder.segmentDurationMinutes = parseInt(duration);
+        }
+      });
+    }
+  });
+
+  // Location frequency settings
+  const locationFreqButtons = document.querySelectorAll('.location-freq-selector .seg-dur-opt');
+  const savedLocationFreq = localStorage.getItem('videogo_location_frequency') || '30';
+  locationFreqButtons.forEach(btn => {
+    const freq = btn.dataset.locationFreq;
+    btn.classList.toggle('active', freq === savedLocationFreq);
+  });
+
+  locationFreqButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      locationFreqButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const freq = btn.dataset.locationFreq;
+      localStorage.setItem('videogo_location_frequency', freq);
+      showToast('✓ Configuración guardada');
+    });
+  });
+
+  // Quality selector handler
+  const qualityOpts = document.querySelectorAll('.quality-opt');
+  qualityOpts.forEach(btn => {
+    btn.addEventListener('click', () => {
+      qualityOpts.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const quality = btn.dataset.quality;
+      localStorage.setItem('videogo_quality', quality);
+      showToast('✓ Configuración guardada');
+    });
+  });
+
+  // Toggle handlers for general settings
+  const toggles = document.querySelectorAll('.toggle input');
+  toggles.forEach(toggle => {
+    toggle.addEventListener('change', () => {
+      showToast('✓ Configuración guardada');
     });
   });
 
