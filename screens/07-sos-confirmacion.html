@@ -211,17 +211,28 @@ body{
   </div>
 </div>
 
+<script src="../js/storage.js"></script>
+<script src="../js/sos.js"></script>
+<script src="../js/contacts.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/app.js"></script>
 <script>
 const confirmBtn = document.getElementById('confirmBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const progressBar = document.getElementById('progressBar');
 const timerText = document.getElementById('timerText');
 const confirmText = document.getElementById('confirmText');
+const contactsList = document.getElementById('contactsList');
 let isHolding = false;
 let holdDuration = 0;
 const requiredDuration = 3000;
 let animationFrameId = null;
 let lastTime = Date.now();
+
+// Cargar contactos dinámicos desde localStorage
+function loadContacts() {
+  Contacts.renderForConfirmation('contactsList');
+}
 
 function updateProgress() {
   if (!isHolding) return;
@@ -240,6 +251,10 @@ function updateProgress() {
     confirmBtn.disabled = true;
     confirmText.textContent = '✓ Confirmado';
     cancelBtn.disabled = true;
+
+    // Activar SOS
+    const sosEvent = SOS.activate();
+
     setTimeout(() => {
       window.location.href = '08-sos-activo.html';
     }, 600);
@@ -311,6 +326,9 @@ confirmBtn.addEventListener('touchend', () => {
 cancelBtn.addEventListener('click', () => {
   window.location.href = '../index.html?mode=recording';
 });
+
+// Inicializar contactos al cargar
+loadContacts();
 </script>
 </body>
 </html>

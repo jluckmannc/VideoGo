@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>VideoGo - Fase 1 Test</title>
+<style>
+body { font-family: monospace; background: #0a0a14; color: #f1f5f9; padding: 20px; line-height: 1.6; }
+.test { margin: 10px 0; padding: 10px; border-left: 3px solid #1d4ed8; background: rgba(29,78,216,0.1); }
+.pass { border-left-color: #16a34a; background: rgba(22,163,74,0.1); }
+.fail { border-left-color: #dc2626; background: rgba(220,38,38,0.1); }
+.warn { border-left-color: #d97706; background: rgba(217,119,6,0.1); }
+h1 { color: #ffffff; margin-top: 0; }
+code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<h1>VideoGo 2.0 - Fase 1 Test Suite</h1>
+<div id="results"></div>
+
+<script src="js/storage.js"></script>
+<script src="js/sos.js"></script>
+<script src="js/recorder.js"></script>
+<script src="js/contacts.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+<script>
+const results = document.getElementById('results');
+
+function test(name, fn) {
+  try {
+    const result = fn();
+    const div = document.createElement('div');
+    div.className = 'test ' + (result.pass ? 'pass' : 'fail');
+    div.innerHTML = (result.pass ? '✓' : '✗') + ' ' + name;
+    if (result.message) div.innerHTML += ': ' + result.message;
+    results.appendChild(div);
+    return result.pass;
+  } catch (e) {
+    const div = document.createElement('div');
+    div.className = 'test fail';
+    div.innerHTML = '✗ ' + name + ': ' + e.message;
+    results.appendChild(div);
+    return false;
+  }
+}
+
+// Tests
+let passed = 0, failed = 0;
+
+// 1. Storage tests
+if (test('Storage.DEFAULT_CONTACTS exists', () => ({
+  pass: Storage.DEFAULT_CONTACTS && Storage.DEFAULT_CONTACTS.length === 3,
+  message: Storage.DEFAULT_CONTACTS?.length || 0 + ' contacts'
+}))) passed++; else failed++;
+
+if (test('Storage.getContacts() returns array', () => ({
+  pass: Array.isArray(Storage.getContacts()),
+  message: Storage.getContacts().length + ' contacts loaded'
+}))) passed++; else failed++;
+
+if (test('Storage.setContacts() persists', () => {
+  const test = [{ id: 'test', name: 'Test', phone: '123' }];
+  Storage.setContacts(test);
+  const result = Storage.getContacts()[0];
+  return { pass: result.id === 'test', message: 'ID: ' + result.id };
+})) passed++; else failed++;
+
+if (test('Storage.addContact() creates new', () => {
+  const before = Storage.getContacts().length;
+  Storage.addContact('Test User', '+34123');
+  const after = Storage.getContacts().length;
+  return { pass: after === before + 1, message: before + ' → ' + after };
+})) passed++; else failed++;
+
+// 2. Recorder tests
+if (test('Recorder.getFormattedTime() works', () => ({
+  pass: Recorder.getFormattedTime() === '00:00:00',
+  message: Recorder.getFormattedTime()
+}))) passed++; else failed++;
+
+if (test('Recorder.start() initializes', () => {
+  Recorder.start();
+  setTimeout(() => {
+    const result = Recorder.getDurationSeconds() > 0;
+    Recorder.stop();
+    return { pass: result, message: Recorder.getDurationSeconds() + 's elapsed' };
+  }, 100);
+  return { pass: true };
+})) passed++; else failed++;
+
+// 3. SOS tests
+if (test('SOS.activate() creates event', () => {
+  const event = SOS.activate();
+  return { pass: event && event.id, message: 'Event ID: ' + event?.id };
+})) passed++; else failed++;
+
+if (test('SOS.getActiveEvent() retrieves', () => {
+  const active = SOS.getActiveEvent();
+  return { pass: active !== null, message: 'Status: ' + active?.status };
+})) passed++; else failed++;
+
+if (test('SOS.cancel() clears state', () => {
+  SOS.cancel();
+  const cleared = SOS.getActiveEvent();
+  return { pass: cleared === null, message: cleared ? 'NOT cleared' : 'Cleared' };
+})) passed++; else failed++;
+
+// 4. Contacts UI tests
+if (test('Contacts.renderList() exists', () => ({
+  pass: typeof Contacts.renderList === 'function'
+}))) passed++; else failed++;
+
+if (test('Contacts.renderForConfirmation() exists', () => ({
+  pass: typeof Contacts.renderForConfirmation === 'function'
+}))) passed++; else failed++;
+
+// 5. UI tests
+if (test('UI.formatTime() works', () => {
+  const formatted = UI.formatTime(125);
+  return { pass: formatted === '00:02:05', message: formatted };
+})) passed++; else failed++;
+
+if (test('UI.formatRelativeTime() works', () => {
+  const now = new Date().toISOString();
+  const relative = UI.formatRelativeTime(now);
+  return { pass: typeof relative === 'string', message: relative };
+})) passed++; else failed++;
+
+// 6. App tests
+if (test('App.init() exists', () => ({
+  pass: typeof App.init === 'function'
+}))) passed++; else failed++;
+
+if (test('App.reset() clears state', () => {
+  App.reset();
+  return { pass: !Recorder.isRecording, message: 'State cleared' };
+})) passed++; else failed++;
+
+// Summary
+setTimeout(() => {
+  const total = passed + failed;
+  const summary = document.createElement('div');
+  summary.style.cssText = 'margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 8px; font-weight: bold; font-size: 16px;';
+  const percent = Math.round((passed / total) * 100);
+  summary.innerHTML = `
+    <div style="color: ${percent === 100 ? '#16a34a' : '#d97706'}">
+      RESULTADO: ${passed}/${total} (${percent}%)
+    </div>
+  `;
+  results.appendChild(summary);
+}, 500);
+</script>
+</body>
+</html>

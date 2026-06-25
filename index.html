@@ -350,6 +350,12 @@ body {
 }
 .android-nav svg { width: 16px; height: 16px; color: rgba(255,255,255,0.35); }
 </style>
+<script src="js/storage.js"></script>
+<script src="js/sos.js"></script>
+<script src="js/recorder.js"></script>
+<script src="js/contacts.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
 </head>
 <body>
 <div class="phone" id="app">
@@ -473,25 +479,32 @@ const flipBtn2 = document.getElementById('flipCameraBtn2');
 const camLabelIdle = document.getElementById('camLabelIdle');
 const camLabelRec = document.getElementById('camLabelRec');
 const segmentBadge = document.getElementById('segmentBadge');
+const recTimer = document.querySelector('.rec-timer');
 const segmentFlash = document.getElementById('segmentFlash');
 const flashMsg = document.getElementById('flashMsg');
 const flashMsgText = document.getElementById('flashMsgText');
 let isRearCamera = true;
-let segmentCount = 1;
+
+// Callback para actualizar timer desde recorder.js
+window.recorderUpdateCallback = (state) => {
+  if (recTimer) {
+    recTimer.textContent = state.time;
+  }
+  segmentBadge.textContent = `Seg. ${state.segments}`;
+};
 
 startBtn.addEventListener('click', () => {
-  segmentCount = 1;
-  segmentBadge.textContent = 'Seg. 1';
+  Recorder.start();
   app.classList.add('recording');
 });
 
 stopBtn.addEventListener('click', () => {
+  Recorder.stop();
   app.classList.remove('recording');
 });
 
 marcarBtn.addEventListener('click', () => {
-  segmentCount++;
-  segmentBadge.textContent = `Seg. ${segmentCount}`;
+  Recorder.markSegment();
 
   segmentFlash.classList.remove('fade', 'active');
   void segmentFlash.offsetWidth;
@@ -501,7 +514,7 @@ marcarBtn.addEventListener('click', () => {
     segmentFlash.classList.remove('active');
   }, 50);
 
-  flashMsgText.textContent = `✓ Segmento #${segmentCount} iniciado`;
+  flashMsgText.textContent = `✓ Segmento #${Recorder.segments} iniciado`;
   flashMsg.classList.remove('active');
   void flashMsg.offsetWidth;
   flashMsg.classList.add('active');

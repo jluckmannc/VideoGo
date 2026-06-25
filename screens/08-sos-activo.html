@@ -275,33 +275,7 @@ body{
     <!-- Contactos Notificados -->
     <div class="panel">
       <p class="panel-title">Contactos notificados</p>
-      <div class="contact-item">
-        <div class="contact-status">
-          <div class="contact-check" id="check1">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <span class="contact-name">María García</span>
-        </div>
-        <span class="contact-time" id="time1">hace 0s</span>
-      </div>
-      <div class="contact-item">
-        <div class="contact-status">
-          <div class="contact-check" id="check2">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <span class="contact-name">Pedro López</span>
-        </div>
-        <span class="contact-time" id="time2">hace 0s</span>
-      </div>
-      <div class="contact-item">
-        <div class="contact-status">
-          <div class="contact-check" id="check3">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <span class="contact-name">Ana Martínez</span>
-        </div>
-        <span class="contact-time" id="time3">hace 0s</span>
-      </div>
+      <div id="contactsPanel"></div>
     </div>
 
     <!-- Ubicación Compartida -->
@@ -361,6 +335,11 @@ body{
   </div>
 </div>
 
+<script src="../js/storage.js"></script>
+<script src="../js/sos.js"></script>
+<script src="../js/contacts.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/app.js"></script>
 <script>
 const emergencyTimer = document.getElementById('emergencyTimer');
 const recordingTime = document.getElementById('recordingTime');
@@ -372,21 +351,66 @@ const cancelDialog = document.getElementById('cancelDialog');
 const dialogKeepBtn = document.getElementById('dialogKeepBtn');
 const dialogConfirmBtn = document.getElementById('dialogConfirmBtn');
 
-let elapsedSeconds = 35;
+let elapsedSeconds = 0;
 let alarmActive = false;
+let sosEvent = null;
+
+// Cargar evento SOS activo
+function loadSOSEvent() {
+  sosEvent = SOS.getActiveEvent();
+  if (sosEvent) {
+    const startTime = new Date(sosEvent.startTime);
+    const now = new Date();
+    elapsedSeconds = Math.floor((now - startTime) / 1000);
+
+    // Renderizar contactos dinámicos
+    const contactsPanel = document.getElementById('contactsPanel');
+    if (contactsPanel) {
+      contactsPanel.innerHTML = '';
+      const contacts = Storage.getContacts();
+      const notifiedIds = sosEvent.contacts_notified || [];
+
+      contacts.forEach((contact) => {
+        if (notifiedIds.includes(contact.id)) {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'contact-item';
+          itemEl.innerHTML = `
+            <div class="contact-status">
+              <div class="contact-check" style="display: flex">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <span class="contact-name">${contact.name}</span>
+            </div>
+            <span class="contact-time">hace 0s</span>
+          `;
+          contactsPanel.appendChild(itemEl);
+        }
+      });
+    }
+  } else {
+    // Redirigir a inicio si no hay SOS activo
+    window.location.href = '../index.html';
+  }
+}
 
 // Animar checkmarks
 function animateChecks() {
-  const checks = ['check1', 'check2', 'check3'];
-  const times = ['time1', 'time2', 'time3'];
+  const contacts = Storage.getContacts();
+  const notifiedIds = sosEvent.contacts_notified || [];
+  let checkIdx = 0;
 
-  checks.forEach((id, idx) => {
-    const check = document.getElementById(id);
-    const timeEl = document.getElementById(times[idx]);
-    check.classList.add('delay' + (idx + 1));
-    setTimeout(() => {
-      check.style.display = 'flex';
-    }, 200 * (idx + 1));
+  contacts.forEach((contact, idx) => {
+    if (notifiedIds.includes(contact.id)) {
+      checkIdx++;
+      setTimeout(() => {
+        const checks = document.querySelectorAll('.contact-check');
+        if (checks[checkIdx - 1]) {
+          checks[checkIdx - 1].classList.add('delay' + checkIdx);
+        }
+      }, 200 * checkIdx);
+    }
   });
 }
 
@@ -405,12 +429,12 @@ function updateTimers() {
   emergencyTimer.textContent = timeStr;
   recordingTime.textContent = timeStr;
 
-  // Actualizar times de contactos (cada 5 segundos)
+  // Actualizar times de contactos
+  const timeElements = document.querySelectorAll('.contact-time');
   if (elapsedSeconds % 5 === 0) {
-    const timeSince = Math.floor(elapsedSeconds / 5) * 5;
-    document.getElementById('time1').textContent = 'hace ' + timeSince + 's';
-    document.getElementById('time2').textContent = 'hace ' + timeSince + 's';
-    document.getElementById('time3').textContent = 'hace ' + timeSince + 's';
+    timeElements.forEach(el => {
+      el.textContent = 'hace ' + elapsedSeconds + 's';
+    });
   }
 
   // Actualizar ubicación
@@ -441,6 +465,7 @@ dialogKeepBtn.addEventListener('click', () => {
 });
 
 dialogConfirmBtn.addEventListener('click', () => {
+  SOS.cancel();
   window.location.href = '04-historial.html';
 });
 
@@ -451,6 +476,8 @@ cancelDialog.addEventListener('click', (e) => {
   }
 });
 
+// Inicializar
+loadSOSEvent();
 setInterval(updateTimers, 1000);
 animateChecks();
 </script>
