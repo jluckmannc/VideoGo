@@ -269,9 +269,10 @@ body {
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   padding: 24px;
-  width: 85%;
-  max-width: 320px;
-  max-height: 80vh;
+  width: calc(100% - 40px);
+  max-width: 300px;
+  margin: 20px;
+  max-height: calc(90vh - 40px);
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
   animation: slideUp 300ms var(--ease-standard) forwards;
