@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VídeoGo · Emergencia Activa</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/brand/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+<link rel="manifest" href="../assets/brand/site.webmanifest">
+
 <style>
 @font-face{
   font-family:"Geist";
@@ -45,7 +50,7 @@ body{
   background:#05050e;font-family:var(--font-body);-webkit-font-smoothing:antialiased;
 }
 .phone{
-  width:390px;height:844px;background:var(--bg);border-radius:28px;overflow:hidden;
+  width:min(390px,100vw);height:min(844px,100vh);background:var(--bg);border-radius:min(28px,6vw);overflow:hidden;
   box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);
   display:flex;flex-direction:column;position:relative;
 }
@@ -96,7 +101,7 @@ body{
 }
 .header-icon svg{width:24px;height:24px;color:white}
 .sos-content{
-  flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;
+  flex:1;overflow-y:auto;padding:16px 16px 94px;display:flex;flex-direction:column;gap:14px;
   scrollbar-width:none;
 }
 .sos-content::-webkit-scrollbar{display:none}
@@ -171,18 +176,18 @@ body{
   color:var(--fg);font-variant-numeric:tabular-nums;
 }
 .alarm-section{
-  display:flex;flex-direction:column;gap:12px;
-  padding:16px;background:linear-gradient(135deg, rgba(220,38,38,0.08) 0%, rgba(220,38,38,0.04) 100%);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px;background:linear-gradient(135deg, rgba(220,38,38,0.07) 0%, rgba(220,38,38,0.03) 100%);
   border-radius:var(--radius-lg);border:1px solid rgba(220,38,38,0.2);
 }
 .alarm-btn{
-  width:120px;height:120px;border-radius:50%;border:3px solid var(--danger);
+  width:96px;height:54px;border-radius:var(--radius-pill);border:1px solid rgba(220,38,38,0.55);
   background:rgba(0,0,0,0.25);cursor:pointer;display:flex;
-  align-items:center;justify-content:center;flex-direction:column;
-  gap:8px;margin:0 auto;transition:all var(--motion-base) var(--ease-standard);
+  align-items:center;justify-content:center;flex-direction:row;
+  gap:8px;margin:0;transition:all var(--motion-base) var(--ease-standard);
   position:relative;
-  font-family:inherit;color:var(--danger);font-weight:600;font-size:12px;
-  text-align:center;padding:12px;
+  font-family:inherit;color:#ff6b6b;font-weight:600;font-size:12px;
+  text-align:left;padding:10px 12px;
   box-shadow:0 0 0 1px rgba(220,38,38,0.3),inset 0 -2px 8px rgba(0,0,0,0.2);
 }
 .alarm-btn:hover{
@@ -201,10 +206,10 @@ body{
   50%{box-shadow:0 0 24px rgba(220,38,38,0.6),inset 0 -2px 8px rgba(0,0,0,0.2)}
 }
 .alarm-icon{
-  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
   position:relative;
 }
-.alarm-icon svg{width:24px;height:24px}
+.alarm-icon svg{width:18px;height:18px}
 .alarm-wave{
   position:absolute;width:100%;height:100%;border:2px solid currentColor;
   border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);
@@ -231,51 +236,57 @@ body{
 .cancel-sos-btn:active{transform:scale(0.98)}
 /* BOTÓN CANCELAR SOS FLOTANTE - SIEMPRE VISIBLE */
 .cancel-sos-btn-floating{
-  position:fixed;
-  bottom:72px;
+  position:absolute;
+  left:16px;
   right:16px;
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  background:var(--danger);
+  bottom:16px;
+  width:auto;
+  height:58px;
+  border-radius:var(--radius-lg);
+  background:linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
   color:white;
   border:none;
-  font-size:10px;
-  font-weight:600;
-  box-shadow:0 4px 12px rgba(220,38,38,0.3),0 0 0 1px rgba(220,38,38,0.5);
+  font-size:13px;
+  font-weight:700;
+  box-shadow:0 10px 28px rgba(220,38,38,0.34),0 0 0 1px rgba(255,255,255,0.1);
   z-index:101;
   cursor:pointer;
   transition:opacity var(--motion-base),transform var(--motion-fast);
   display:flex;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
-  gap:6px;
+  flex-direction:row;
+  gap:10px;
+  letter-spacing:0.03em;
 }
 .cancel-sos-btn-floating:hover{
   opacity:0.9;
-  transform:scale(1.05);
-  box-shadow:0 6px 16px rgba(220,38,38,0.4),0 0 0 1px rgba(220,38,38,0.5);
+  transform:translateY(-1px);
+  box-shadow:0 12px 32px rgba(220,38,38,0.42),0 0 0 1px rgba(255,255,255,0.12);
 }
 .cancel-sos-btn-floating:active{
-  transform:scale(0.92);
+  transform:scale(0.98);
 }
 .cancel-sos-btn-floating::before{
-  content:'✕';
-  font-size:24px;
+  content:'X';
+  font-size:22px;
   font-weight:bold;
 }
 .cancel-sos-btn-floating::after{
-  content:'CANCELAR';
-  font-size:9px;
-  letter-spacing:0.05em;
+  content:'CANCELAR EMERGENCIA';
+  font-size:13px;
+  letter-spacing:0.03em;
 }
 .android-nav{
-  display:flex;justify-content:center;gap:24px;
+  display:none;justify-content:center;gap:24px;
   padding:6px 20px 8px;flex-shrink:0;
   background:rgba(0,0,0,0.2);backdrop-filter:blur(12px);
 }
 .android-nav svg{width:16px;height:16px;color:rgba(255,255,255,0.35)}
+@media (max-width:430px){
+  body{align-items:stretch;background:var(--bg)}
+  .phone{width:100vw;height:100vh;border-radius:0;box-shadow:none}
+}
 .dialog-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(2px);
   z-index:200;display:none;align-items:center;justify-content:center;

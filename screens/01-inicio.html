@@ -3,6 +3,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VídeoGo · Inicio</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/brand/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+<link rel="manifest" href="../assets/brand/site.webmanifest">
+
 <style>
 :root {
   --bg: #ffffff;
@@ -124,7 +129,7 @@ body {
   opacity: 0.65;
   transition: opacity var(--motion-fast) var(--ease-standard);
 }
-.cam-brand svg { width: 18px; height: 18px; color: rgba(255,255,255,0.75); }
+.cam-brand .brand-logo { width: 24px; height: 24px; border-radius: 7px; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,0.14); }
 .cam-brand span {
   font-family: var(--font-display);
   font-size: 13px; font-weight: 600;
@@ -371,7 +376,7 @@ body {
     <div class="camera-overlay">
       <div class="cam-top-bar">
         <div class="cam-brand">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          <img class="brand-logo" src="../assets/brand/videogo-icon-192.png" alt="" aria-hidden="true">
           <span>VídeoGo</span>
         </div>
         <div class="cam-top-right">

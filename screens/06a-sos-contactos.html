@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VídeoGo · Contactos SOS</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/brand/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+<link rel="manifest" href="../assets/brand/site.webmanifest">
+
 <style>
 :root {
   --bg: #0a0a14;
@@ -46,10 +51,10 @@ body {
 }
 
 .phone {
-  width: 390px;
-  height: 844px;
+  width: min(390px, 100vw);
+  height: min(844px, 100vh);
   background: var(--bg);
-  border-radius: 28px;
+  border-radius: min(28px, 6vw);
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
   display: flex;
@@ -99,6 +104,21 @@ body {
   padding: 4px 20px 8px;
   flex-shrink: 0;
 }
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.page-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
 
 .page-header .back-btn {
   background: none;
@@ -125,7 +145,6 @@ body {
   font-weight: 700;
   margin: 0;
   color: var(--fg);
-  flex: 1;
 }
 
 .page-header .add-btn {
@@ -376,7 +395,7 @@ body {
 }
 
 .android-nav {
-  display: flex;
+  display: none;
   justify-content: center;
   gap: 24px;
   padding: 6px 20px 8px;
@@ -389,6 +408,15 @@ body {
   width: 16px;
   height: 16px;
   color: rgba(255,255,255,0.35);
+}
+@media (max-width: 430px) {
+  body { align-items: stretch; background: var(--bg); }
+  .phone {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 </style>
 </head>
@@ -408,7 +436,10 @@ body {
     <button class="back-btn" id="backBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <h1>Contactos SOS</h1>
+    <div class="page-title">
+      <img class="page-logo" src="../assets/brand/videogo-icon-192.png" alt="" aria-hidden="true">
+      <h1>Contactos SOS</h1>
+    </div>
     <button class="add-btn" id="addContactBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Agregar

@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VídeoGo · Configuración</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/brand/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+<link rel="manifest" href="../assets/brand/site.webmanifest">
+
 <style>
 :root {
   --bg: #0a0a14;
@@ -47,7 +52,7 @@ body{
   background:#05050e;font-family:var(--font-body);-webkit-font-smoothing:antialiased;
 }
 .phone{
-  width:390px;height:844px;background:var(--bg);border-radius:28px;overflow:hidden;
+  width:min(390px,100vw);height:min(844px,100vh);background:var(--bg);border-radius:min(28px,6vw);overflow:hidden;
   box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);
   display:flex;flex-direction:column;position:relative;
 }
@@ -64,6 +69,8 @@ body{
 .page-header{
   display:flex;align-items:center;gap:12px;padding:4px 20px 8px;flex-shrink:0;
 }
+.page-title{display:flex;align-items:center;gap:10px}
+.page-logo{width:34px;height:34px;border-radius:10px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,0.12)}
 .page-header .back-btn{
   background:none;border:none;padding:4px;cursor:pointer;color:rgba(255,255,255,0.7);display:flex;
   transition:color var(--motion-fast) var(--ease-standard);
@@ -75,13 +82,13 @@ body{
 }
 
 .settings-scroll{
-  flex:1;overflow-y:scroll;padding:4px 16px 12px;display:flex;flex-direction:column;gap:8px;
+  flex:1;overflow-y:scroll;padding:4px 16px 14px;display:flex;flex-direction:column;gap:8px;
   scrollbar-width:none;
 }
 .settings-scroll::-webkit-scrollbar{display:none;width:0;height:0}
 
 .settings-group{
-  background:var(--surface);border-radius:var(--radius-lg);padding:4px 16px 8px;
+  background:var(--surface);border-radius:var(--radius-lg);padding:2px 14px 6px;
   border:1px solid var(--border);
 }
 .settings-group .group-title{
@@ -90,17 +97,18 @@ body{
 }
 .setting-item{
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 0;gap:12px;
+  padding:12px 0;gap:12px;
 }
 .setting-item+.setting-item{border-top:1px solid var(--border)}
 .setting-item .setting-info{flex:1;min-width:0}
 .setting-item .setting-info .label{
   font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0;
 }
+.setting-item .label{color:var(--fg)}
 .setting-item .setting-info .desc{
   font-size:12px;color:var(--muted);margin:2px 0 0;
 }
-.seg-dur-selector{display:flex;gap:6px}
+.seg-dur-selector{display:flex;gap:5px;flex-shrink:0}
 .seg-dur-opt{
   display:flex;align-items:center;gap:4px;padding:6px 10px;border-radius:var(--radius-sm);
   border:1px solid var(--border);background:transparent;font:inherit;
@@ -111,9 +119,15 @@ body{
 .seg-dur-opt:hover{border-color:rgba(255,255,255,0.15);color:var(--fg)}
 .seg-dur-opt.active{background:rgba(29,78,216,0.12);border-color:var(--accent);color:var(--fg)}
 .seg-dur-opt.active::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
-.quality-selector{display:flex;gap:6px}
+.quality-selector{display:flex;gap:5px;flex-shrink:0}
+.setting-item:has(.quality-selector){
+  align-items:stretch;
+  flex-direction:column;
+}
+.setting-item:has(.quality-selector) .quality-selector{width:100%}
+.setting-item:has(.quality-selector) .quality-opt{flex:1}
 .quality-opt{
-  padding:6px 14px;border-radius:var(--radius-pill);
+  padding:6px 10px;border-radius:var(--radius-pill);
   border:1px solid var(--border);background:transparent;font:inherit;
   font-size:12px;font-weight:500;cursor:pointer;
   color:var(--muted);transition:all var(--motion-fast) var(--ease-standard);
@@ -139,8 +153,10 @@ body{
   display:flex;align-items:center;gap:10px;padding:10px 12px;
   border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;
   transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard);
+  background:transparent;color:inherit;font:inherit;text-align:left;width:100%;
 }
 .platform-opt:hover{border-color:rgba(29,78,216,0.3);background:rgba(255,255,255,0.02)}
+.platform-opt:focus-visible{outline:2px solid rgba(29,78,216,0.7);outline-offset:2px}
 .platform-opt.active{border-color:var(--accent);background:rgba(29,78,216,0.08)}
 .platform-opt .radio-circle{
   width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.1);
@@ -174,11 +190,20 @@ body{
 .bottom-nav-item svg{width:24px;height:24px;color:rgba(255,255,255,0.35)}
 .bottom-nav-item span{font-size:10px;font-weight:500}
 .android-nav{
-  display:flex;justify-content:center;gap:24px;
+  display:none;justify-content:center;gap:24px;
   padding:6px 20px 8px;flex-shrink:0;
   background:rgba(0,0,0,0.2);backdrop-filter:blur(12px);
 }
 .android-nav svg{width:16px;height:16px;color:rgba(255,255,255,0.35)}
+@media (max-width:430px){
+  body{align-items:stretch;background:var(--bg)}
+  .phone{width:100vw;height:100vh;border-radius:0;box-shadow:none}
+}
+@media (max-width:380px){
+  .setting-item{align-items:flex-start;flex-direction:column}
+  .quality-selector,.seg-dur-selector{width:100%}
+  .quality-opt,.seg-dur-opt{flex:1;justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -197,7 +222,10 @@ body{
     <button class="back-btn" onclick="window.location.href='../index.html'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
-    <h1>Configuración</h1>
+    <div class="page-title">
+      <img class="page-logo" src="../assets/brand/videogo-icon-192.png" alt="" aria-hidden="true">
+      <h1>Configuración</h1>
+    </div>
   </div>
 
   <div class="settings-scroll">
@@ -262,22 +290,22 @@ body{
           </label>
         </div>
         <div class="platform-list">
-          <div class="platform-opt active">
+          <button type="button" class="platform-opt active" data-platform="google-drive" aria-pressed="true">
             <div class="radio-circle"></div>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg>
             <div class="plat-info">
               <div class="plat-name">Google Drive</div>
               <div class="plat-desc">2.1 GB disponibles</div>
             </div>
-          </div>
-          <div class="platform-opt">
+          </button>
+          <button type="button" class="platform-opt" data-platform="dropbox" aria-pressed="false">
             <div class="radio-circle"></div>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 9v8"/><path d="M8 13h8"/></svg>
             <div class="plat-info">
               <div class="plat-name">Dropbox</div>
               <div class="plat-desc">No conectado</div>
             </div>
-          </div>
+          </button>
         </div>
       </div>
     </div>
@@ -441,6 +469,29 @@ document.addEventListener('DOMContentLoaded', () => {
       const quality = btn.dataset.quality;
       localStorage.setItem('videogo_quality', quality);
       showToast('✓ Configuración guardada');
+    });
+  });
+
+  // Backup platform selector
+  const platformOpts = document.querySelectorAll('.platform-opt[data-platform]');
+  const savedPlatform = localStorage.getItem('videogo_backup_platform') || 'google-drive';
+  platformOpts.forEach(btn => {
+    const isActive = btn.dataset.platform === savedPlatform;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-pressed', String(isActive));
+  });
+
+  platformOpts.forEach(btn => {
+    btn.addEventListener('click', () => {
+      platformOpts.forEach(opt => {
+        opt.classList.remove('active');
+        opt.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      localStorage.setItem('videogo_backup_platform', btn.dataset.platform);
+      const name = btn.querySelector('.plat-name')?.textContent?.trim() || 'plataforma';
+      showToast(`✓ Respaldo en ${name}`);
     });
   });
 

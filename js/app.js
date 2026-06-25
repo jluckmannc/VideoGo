@@ -49,6 +49,8 @@ const App = {
    * Restaurar estado de grabación desde sessionStorage
    */
   restoreRecorderState() {
+    if (!window.Recorder) return;
+
     const current = Storage.getCurrentRecording();
     if (current && current.isRecording) {
       Recorder.restore();
@@ -64,7 +66,9 @@ const App = {
       // Si estamos en pantalla diferente a 08-sos-activo, ir allá
       const currentPath = window.location.pathname;
       if (!currentPath.includes('08-sos-activo')) {
-        window.location.href = 'screens/08-sos-activo.html';
+        window.location.href = currentPath.includes('/screens/')
+          ? '08-sos-activo.html'
+          : 'screens/08-sos-activo.html';
       }
     }
   },
@@ -75,7 +79,7 @@ const App = {
   setupGlobalListeners() {
     // Prevenir navegación accidental
     window.addEventListener('beforeunload', (e) => {
-      if (Recorder.isRecording) {
+      if (window.Recorder && Recorder.isRecording) {
         e.preventDefault();
         e.returnValue = 'Una grabación está en progreso. ¿Estás seguro?';
       }
@@ -108,10 +112,12 @@ const App = {
   reset() {
     localStorage.clear();
     sessionStorage.clear();
-    Recorder.isRecording = false;
-    Recorder.startTime = null;
-    Recorder.pausedTime = 0;
-    Recorder.segments = 1;
+    if (window.Recorder) {
+      Recorder.isRecording = false;
+      Recorder.startTime = null;
+      Recorder.pausedTime = 0;
+      Recorder.segments = 1;
+    }
     console.log('App reset complete');
   }
 };

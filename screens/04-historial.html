@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VídeoGo · Historial</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/brand/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+<link rel="manifest" href="../assets/brand/site.webmanifest">
+
 <style>
 :root {
   --bg: #0a0a14;
@@ -48,7 +53,7 @@ body{
   background:#05050e;font-family:var(--font-body);-webkit-font-smoothing:antialiased;
 }
 .phone{
-  width:390px;height:844px;background:var(--bg);border-radius:28px;overflow:hidden;
+  width:min(390px,100vw);height:min(844px,100vh);background:var(--bg);border-radius:min(28px,6vw);overflow:hidden;
   box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);
   display:flex;flex-direction:column;position:relative;
 }
@@ -65,6 +70,8 @@ body{
 .page-header{
   display:flex;align-items:center;justify-content:space-between;padding:4px 20px 8px;flex-shrink:0;
 }
+.page-title{display:flex;align-items:center;gap:10px}
+.page-logo{width:34px;height:34px;border-radius:10px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,0.12)}
 .page-header h1{
   font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;margin:0;color:var(--fg);
 }
@@ -77,10 +84,10 @@ body{
 .page-header .actions button:hover{background:rgba(255,255,255,0.08);color:var(--fg)}
 .page-header .actions svg{width:20px;height:20px}
 .history-list{
-  flex:1;overflow-y:auto;padding:0 16px 8px;display:flex;flex-direction:column;gap:10px;
+  flex:1;overflow-y:auto;padding:0 16px 12px;display:flex;flex-direction:column;gap:8px;
 }
 .history-item{
-  display:flex;gap:14px;padding:14px;
+  display:flex;gap:12px;padding:12px;
   border-radius:var(--radius-lg);background:var(--surface);
   border:1px solid var(--border);
   transition:border-color var(--motion-fast) var(--ease-standard),background var(--motion-fast) var(--ease-standard);
@@ -95,7 +102,7 @@ body{
   50%{opacity:0.92}
 }
 .thumb{
-  width:72px;height:54px;border-radius:var(--radius-sm);
+  width:62px;height:48px;border-radius:var(--radius-sm);
   background:linear-gradient(135deg,#1e1e32,#0f0f1e);
   flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
 }
@@ -110,7 +117,7 @@ body{
   margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .item-body .meta{
-  font-size:11px;color:var(--muted);margin:3px 0 0;display:flex;gap:6px;align-items:center;
+  font-size:11px;color:var(--muted);margin:3px 0 0;display:flex;gap:5px;align-items:center;flex-wrap:wrap;
 }
 .item-body .meta .sep{opacity:0.35}
 .cloud-badge{
@@ -120,7 +127,8 @@ body{
 .cloud-badge.synced{background:rgba(22,163,74,0.12);color:var(--success)}
 .cloud-badge.pending{background:rgba(217,119,6,0.12);color:var(--warn)}
 .cloud-badge svg{width:10px;height:10px}
-.item-actions{display:flex;gap:6px;flex-shrink:0}
+.item-actions{display:flex;gap:4px;flex-shrink:0}
+.history-item:not(:first-child) .item-actions .act-btn:not(:first-child){display:none}
 .act-btn{
   width:36px;height:36px;border-radius:50%;border:none;background:transparent;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
@@ -147,7 +155,7 @@ body{
   font-size:11px;color:var(--muted);margin:1px 0 0;
 }
 .history-item.segment{
-  margin-left:12px;padding:10px 14px;
+  margin-left:8px;padding:9px 12px;
   border-left:2px solid rgba(29,78,216,0.2);
 }
 .seg-num{
@@ -172,11 +180,15 @@ body{
 .bottom-nav-item svg{width:24px;height:24px;color:rgba(255,255,255,0.35)}
 .bottom-nav-item span{font-size:10px;font-weight:500}
 .android-nav{
-  display:flex;justify-content:center;gap:24px;
+  display:none;justify-content:center;gap:24px;
   padding:6px 20px 8px;flex-shrink:0;
   background:rgba(0,0,0,0.2);backdrop-filter:blur(12px);
 }
 .android-nav svg{width:16px;height:16px;color:rgba(255,255,255,0.35)}
+@media (max-width:430px){
+  body{align-items:stretch;background:var(--bg)}
+  .phone{width:100vw;height:100vh;border-radius:0;box-shadow:none}
+}
 </style>
 </head>
 <body>
@@ -192,7 +204,10 @@ body{
   </div>
 
   <div class="page-header">
-    <h1>Historial</h1>
+    <div class="page-title">
+      <img class="page-logo" src="../assets/brand/videogo-icon-192.png" alt="" aria-hidden="true">
+      <h1>Historial</h1>
+    </div>
     <div class="actions">
       <button title="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
     </div>
