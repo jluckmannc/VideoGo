@@ -286,6 +286,60 @@ body{
         </div>
       </div>
     </div>
+
+    <div class="settings-group">
+      <div class="group-title">Seguridad · Red de confianza</div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <p class="label">Modo emergencia</p>
+          <p class="desc">Notificar a contactos en caso de emergencia</p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" checked />
+          <div class="slider"></div>
+        </label>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <p class="label">Compartir ubicación</p>
+          <p class="desc">Con tus contactos de confianza</p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" checked />
+          <div class="slider"></div>
+        </label>
+      </div>
+      <div class="setting-item">
+        <div class="setting-info">
+          <p class="label">Alarma sonora</p>
+          <p class="desc">Activar al modo emergencia</p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" checked />
+          <div class="slider"></div>
+        </label>
+      </div>
+      <div class="setting-item" style="flex-direction:column;align-items:stretch;gap:12px;padding-top:4px">
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+          <p class="label" style="margin:0">Mis contactos de confianza</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border-radius:var(--radius-md);border:1px solid var(--border)">
+            <div style="font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0">María García</div>
+            <div style="font-size:11px;color:var(--muted);margin:2px 0 0">Pareja · +54 11 2222 3333</div>
+          </div>
+          <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border-radius:var(--radius-md);border:1px solid var(--border)">
+            <div style="font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0">Pedro López</div>
+            <div style="font-size:11px;color:var(--muted);margin:2px 0 0">Familiar · +54 11 3333 4444</div>
+          </div>
+          <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border-radius:var(--radius-md);border:1px solid var(--border)">
+            <div style="font-size:var(--text-sm);font-weight:500;color:var(--fg);margin:0">Ana Martínez</div>
+            <div style="font-size:11px;color:var(--muted);margin:2px 0 0">Amiga · +54 11 4444 5555</div>
+          </div>
+        </div>
+        <button style="padding:10px;border:1px solid rgba(255,255,255,0.15);background:transparent;border-radius:var(--radius-md);color:var(--fg);cursor:pointer;font-size:var(--text-sm);font-weight:500;font-family:inherit;transition:all var(--motion-fast) var(--ease-standard)" onmouseover="this.style.background='rgba(255,255,255,0.04)'" onmouseout="this.style.background='transparent'">+ Agregar contacto</button>
+      </div>
+    </div>
   </div>
 
   <div class="bottom-nav">

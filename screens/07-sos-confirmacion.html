@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VídeoGo · Confirmación SOS</title>
+<style>
+:root {
+  --bg: #0a0a14;
+  --surface: #12121e;
+  --fg: #f1f5f9;
+  --muted: #94a3b8;
+  --border: rgba(255,255,255,0.06);
+  --danger: #dc2626;
+  --danger-dark: #991b1b;
+  --danger-light: rgba(220,38,38,0.12);
+  --font-display: "Geist","Geist Sans",-apple-system,system-ui,"Segoe UI",Arial,sans-serif;
+  --font-body: "Geist","Geist Sans",-apple-system,system-ui,"Segoe UI",Arial,sans-serif;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease-standard: cubic-bezier(0.2,0,0,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;
+  background:#05050e;font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+}
+.phone{
+  width:390px;height:844px;background:var(--bg);border-radius:28px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);
+  display:flex;flex-direction:column;position:relative;
+}
+.status-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 24px 8px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.9);flex-shrink:0;
+}
+.status-icons{display:flex;gap:6px;align-items:center}
+.status-icons svg{width:16px;height:16px;stroke:rgba(255,255,255,0.9)}
+.punch-hole{
+  width:10px;height:10px;background:black;border-radius:50%;
+  position:absolute;top:16px;left:50%;margin-left:-5px;z-index:3;
+}
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);
+  z-index:10;
+}
+.dialog{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:11;background:var(--bg);border-radius:var(--radius-lg);
+  border:1px solid var(--border);padding:var(--space-6);
+  width:calc(100% - 40px);max-width:320px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.8);
+  display:flex;flex-direction:column;gap:20px;
+  animation:slide-up 300ms var(--ease-standard) forwards;
+}
+@keyframes slide-up {
+  from {
+    transform:translate(-50%, -40%);opacity:0;
+  }
+  to {
+    transform:translate(-50%, -50%);opacity:1;
+  }
+}
+.dialog-icon{
+  width:80px;height:80px;border-radius:50%;
+  background:var(--danger-light);border:2px solid var(--danger);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto;animation:shield-pulse 2s ease-in-out infinite;
+}
+@keyframes shield-pulse {
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+}
+.dialog-icon svg{width:48px;height:48px;color:var(--danger)}
+.dialog-title{
+  font-size:var(--text-xl);font-weight:700;color:var(--fg);
+  margin:0;text-align:center;font-family:var(--font-display);
+}
+.dialog-subtitle{
+  font-size:var(--text-sm);color:var(--muted);margin:0;text-align:center;
+}
+.contacts-list{
+  display:flex;flex-direction:column;gap:6px;
+  background:rgba(255,255,255,0.02);border-radius:var(--radius-md);
+  padding:12px;
+}
+.contact-item{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 8px;border-radius:var(--radius-sm);
+  font-size:var(--text-sm);color:var(--fg);
+}
+.contact-badge{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--danger-light);border:1.5px solid var(--danger);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.contact-badge svg{width:12px;height:12px;color:var(--danger)}
+.confirm-btn{
+  width:100%;padding:12px;border:none;cursor:pointer;
+  border-radius:var(--radius-lg);font-family:inherit;
+  font-size:var(--text-base);font-weight:600;
+  transition:all var(--motion-base) var(--ease-standard);
+  position:relative;overflow:hidden;
+  background:var(--danger);color:white;
+}
+.confirm-btn:active{transform:scale(0.98)}
+.confirm-btn.disabled{
+  opacity:0.6;cursor:not-allowed;
+}
+.progress-container{
+  position:relative;width:100%;height:4px;
+  background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;
+}
+.progress-bar{
+  height:100%;background:var(--danger);border-radius:2px;
+  width:0%;transition:width 100ms linear;
+}
+.confirm-text{
+  font-size:12px;color:var(--muted);text-align:center;margin:0;
+}
+.cancel-btn{
+  width:100%;padding:12px;border:1px solid var(--border);cursor:pointer;
+  border-radius:var(--radius-lg);font-family:inherit;
+  font-size:var(--text-base);font-weight:500;color:var(--fg);
+  background:transparent;transition:all var(--motion-fast) var(--ease-standard);
+}
+.cancel-btn:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1)}
+.cancel-btn:active{transform:scale(0.98)}
+.android-nav{
+  display:flex;justify-content:center;gap:24px;
+  padding:6px 20px 8px;flex-shrink:0;
+  background:rgba(0,0,0,0.2);backdrop-filter:blur(12px);position:absolute;bottom:0;width:100%;
+}
+.android-nav svg{width:16px;height:16px;color:rgba(255,255,255,0.35)}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="punch-hole"></div>
+  <div class="status-bar">
+    <span class="time">14:35</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M1 9l4 4-4 4"/><path d="M7 17l4-4-4-4"/><rect x="11" y="5" width="10" height="14" rx="2"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h12"/></svg>
+    </div>
+  </div>
+
+  <div class="overlay"></div>
+
+  <div class="dialog" id="sosDialog">
+    <div class="dialog-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+
+    <h2 class="dialog-title">¿Activar emergencia?</h2>
+
+    <p class="dialog-subtitle">Se notificará a:</p>
+
+    <div class="contacts-list" id="contactsList">
+      <div class="contact-item">
+        <div class="contact-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span>María García</span>
+      </div>
+      <div class="contact-item">
+        <div class="contact-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span>Pedro López</span>
+      </div>
+      <div class="contact-item">
+        <div class="contact-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span>Ana Martínez</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <button class="confirm-btn" id="confirmBtn" title="Mantener presionado para confirmar">
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <span id="confirmText" style="position:relative;z-index:1">Mantener presionado</span>
+      </button>
+      <p class="confirm-text" id="timerText">3 segundos</p>
+    </div>
+
+    <button class="cancel-btn" id="cancelBtn">Cancelar</button>
+  </div>
+
+  <div class="android-nav">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="15 3 6 12 15 21 15 21"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="10"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9 21 18 12 9 3 9 3"/></svg>
+  </div>
+</div>
+
+<script>
+const confirmBtn = document.getElementById('confirmBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const progressBar = document.getElementById('progressBar');
+const timerText = document.getElementById('timerText');
+const confirmText = document.getElementById('confirmText');
+let isHolding = false;
+let holdDuration = 0;
+const requiredDuration = 3000;
+let animationFrameId = null;
+let lastTime = Date.now();
+
+function updateProgress() {
+  if (!isHolding) return;
+
+  const now = Date.now();
+  holdDuration += now - lastTime;
+  lastTime = now;
+
+  const progress = Math.min((holdDuration / requiredDuration) * 100, 100);
+  progressBar.style.width = progress + '%';
+
+  const remainingSeconds = Math.ceil((requiredDuration - holdDuration) / 1000);
+  timerText.textContent = remainingSeconds + ' segundo' + (remainingSeconds !== 1 ? 's' : '');
+
+  if (holdDuration >= requiredDuration) {
+    confirmBtn.disabled = true;
+    confirmText.textContent = '✓ Confirmado';
+    cancelBtn.disabled = true;
+    setTimeout(() => {
+      window.location.href = '08-sos-activo.html';
+    }, 600);
+  } else {
+    animationFrameId = requestAnimationFrame(updateProgress);
+  }
+}
+
+confirmBtn.addEventListener('mousedown', () => {
+  if (confirmBtn.disabled) return;
+  isHolding = true;
+  holdDuration = 0;
+  lastTime = Date.now();
+  confirmBtn.classList.add('holding');
+  updateProgress();
+});
+
+confirmBtn.addEventListener('mouseup', () => {
+  isHolding = false;
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+  if (holdDuration < requiredDuration) {
+    holdDuration = 0;
+    progressBar.style.width = '0%';
+    timerText.textContent = '3 segundos';
+    confirmBtn.classList.remove('holding');
+  }
+});
+
+confirmBtn.addEventListener('mouseleave', () => {
+  if (isHolding) {
+    isHolding = false;
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+    }
+    if (holdDuration < requiredDuration) {
+      holdDuration = 0;
+      progressBar.style.width = '0%';
+      timerText.textContent = '3 segundos';
+      confirmBtn.classList.remove('holding');
+    }
+  }
+});
+
+// Para touchscreen
+confirmBtn.addEventListener('touchstart', (e) => {
+  if (confirmBtn.disabled) return;
+  isHolding = true;
+  holdDuration = 0;
+  lastTime = Date.now();
+  confirmBtn.classList.add('holding');
+  updateProgress();
+});
+
+confirmBtn.addEventListener('touchend', () => {
+  isHolding = false;
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+  if (holdDuration < requiredDuration) {
+    holdDuration = 0;
+    progressBar.style.width = '0%';
+    timerText.textContent = '3 segundos';
+    confirmBtn.classList.remove('holding');
+  }
+});
+
+cancelBtn.addEventListener('click', () => {
+  window.location.href = '../index.html?mode=recording';
+});
+</script>
+</body>
+</html>
