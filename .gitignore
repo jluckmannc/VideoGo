@@ -1,0 +1,37 @@
+# 🚫 Archivos y carpetas a ignorar
+
+## IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+## Claude Code & gstack
+.claudesettings.local.json
+.claude/
+.gstack/
+
+## Temporal/Cache
+.archive/
+*.tmp
+*.log
+.cache/
+
+## Documentación generada (no es código)
+# Los archivos en docs/ SÍ se comitean, pero no capturas/reportes temporales
+design-audit-**/
+*.report.html
+
+## Node (si se agrega backend)
+node_modules/
+.env
+.env.local
+
+## Build
+dist/
+build/
+
+## OS
+Thumbs.db

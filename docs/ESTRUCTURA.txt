@@ -1,0 +1,125 @@
+🏗️ VIDEOGO — ESTRUCTURA DE DOCUMENTACIÓN
+
+VideoGo/
+├── 📂 CÓDIGO FUENTE
+│   ├── index.html                    (Pantalla principal)
+│   ├── screens/                      (7 pantallas adicionales)
+│   │   ├── 01-inicio.html
+│   │   ├── 02-grabacion.html
+│   │   ├── 03-flotante.html
+│   │   ├── 04-historial.html
+│   │   ├── 05-detalle.html
+│   │   ├── 06-configuracion.html
+│   │   ├── 07-sos-confirmacion.html
+│   │   └── 08-sos-activo.html
+│   └── [CSS/JS inline en HTML]
+│
+├── 📂 📚 DOCUMENTACIÓN PRINCIPAL (← EMPIEZA AQUÍ)
+│   ├── README-DOCS.md                ⭐ Guía rápida por rol
+│   └── docs/
+│       ├── README.md                 📖 Índice maestro
+│       ├── 🔍 research/
+│       │   └── MARKET-RESEARCH-DASHCAM.md
+│       │       • Top 5 apps más descargadas
+│       │       • Features que generan 4.5+ estrellas
+│       │       • Modelos de monetización
+│       │       • Oportunidades para VideoGo
+│       │       📏 11K | ⏱️ 10 min lectura
+│       │
+│       ├── 🎨 design/
+│       │   └── DESIGN-AUDIT-REPORT.md
+│       │       • Coherencia visual: 8.4/10 ✅
+│       │       • Fricciones en flujos (crítica identificada)
+│       │       • Propuestas de mejora sin código
+│       │       • AI Slop detection: 9/10 (cero detectado)
+│       │       📏 21K | ⏱️ 15 min lectura
+│       │
+│       └── 🛣️ roadmap/
+│           └── VIDEOGO-ROADMAP.md
+│               • Sprint 1: ✅ SOS básico
+│               • Sprint 2: ⏳ Contactos + robustez
+│               • Sprint 3: 📅 Backend real
+│               • Tareas con esfuerzo y prioridad
+│               📏 7.5K | ⏱️ 15 min lectura
+│
+├── 📂 CONFIGURACIÓN PROYECTO
+│   ├── CLAUDE.md                     (Restricciones, cómo trabajar)
+│   ├── .gitignore                    (Qué ignorar en Git)
+│   └── .claudecommands/              (Configuración Claude Code)
+│
+└── 📂 TEMPORAL
+    └── .archive/                     (Reportes generados, cachés)
+
+
+═══════════════════════════════════════════════════════════════════
+
+🚀 CÓMO USAR ESTO:
+
+1️⃣  POR PRIMERA VEZ:
+    Lee: README-DOCS.md (5 min) → Sigue tu rol
+
+2️⃣  MANAGER/PM:
+    research/ → design/ → roadmap/ (35 min total)
+    Resultado: Entiendes mercado, problemas, plan técnico
+
+3️⃣  DESIGNER:
+    design/ → roadmap (Sprint 2) → skim research/ (30 min)
+    Resultado: Ves qué diseñar, propuestas, prioridades
+
+4️⃣  DEVELOPER:
+    CLAUDE.md → roadmap (Sprint 2) → design/ (30 min)
+    Resultado: Tareas técnicas, specs visuales, restricciones
+
+═══════════════════════════════════════════════════════════════════
+
+📊 ESTADO DEL PROYECTO:
+
+Sprint 1 (SOS básico)
+  ✅ 8 pantallas diseñadas
+  ✅ Flujo SOS confirmación + activo
+  ✅ Animaciones + interacciones
+  ✅ Coherencia visual: 8.4/10
+
+Sprint 2 (Contactos + Robustez)
+  ⏳ Botón Cancelar flotante (P0)
+  ⏳ Contactos dinámicos (P1)
+  ⏳ SOS en historial (P1)
+  ⏳ SOS en ajustes (P2)
+
+Sprint 3 (Backend)
+  📅 API real
+  📅 Notificaciones reales
+  📅 Ubicación real
+
+═══════════════════════════════════════════════════════════════════
+
+🎯 ACCESO RÁPIDO A RESPUESTAS:
+
+¿Cuál es mi diferencial?
+  → docs/research/ ("La Oportunidad de VideoGo")
+
+¿Qué tiene mal el SOS?
+  → docs/design/ ("Fricciones Identificadas")
+
+¿Qué debo arreglar primero?
+  → docs/design/ ("P0: Botón Cancelar Flotante")
+
+¿Cuándo termino Sprint 2?
+  → docs/roadmap/ ("Prioridades")
+
+¿Cómo monetizo?
+  → docs/research/ ("Modelos de Monetización")
+
+¿Está bien diseñado?
+  → docs/design/ ("Coherencia Visual: 8.4/10 ✅")
+
+═══════════════════════════════════════════════════════════════════
+
+💡 TIPS:
+  • Todos los docs están en markdown (abre en editor, GitHub, etc.)
+  • Los índices (README.md) tienen links clickeables
+  • Próxima auditoría después de Sprint 2
+  • Actualiza docs según cambios (son autoridad de la verdad)
+
+Generado por: /plan-ceo-review, /design-review, /investigate
+Última actualización: 24 de junio, 2026
