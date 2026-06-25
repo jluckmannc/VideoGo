@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VídeoGo · Confirmación SOS</title>
 <style>
+@font-face{
+  font-family:"Geist";
+  font-display:swap;
+  src:local("Geist"),local("-apple-system"),local("system-ui");
+}
 :root {
   --bg: #0a0a14;
   --surface: #12121e;
@@ -135,7 +140,7 @@ body{
 }
 .progress-bar{
   height:100%;background:linear-gradient(90deg, var(--danger) 0%, #ff0000 100%);border-radius:3px;
-  width:0%;transition:width 100ms linear;
+  transform-origin:left;transform:scaleX(0);transition:transform 100ms linear;
   box-shadow:0 0 8px rgba(220,38,38,0.5);
 }
 .confirm-text{
@@ -257,8 +262,8 @@ function updateProgress() {
   holdDuration += now - lastTime;
   lastTime = now;
 
-  const progress = Math.min((holdDuration / requiredDuration) * 100, 100);
-  progressBar.style.width = progress + '%';
+  const progress = Math.min((holdDuration / requiredDuration), 1);
+  progressBar.style.transform = `scaleX(${progress})`;
 
   const remainingSeconds = Math.ceil((requiredDuration - holdDuration) / 1000);
   timerText.textContent = remainingSeconds + ' segundo' + (remainingSeconds !== 1 ? 's' : '');
@@ -295,7 +300,7 @@ confirmBtn.addEventListener('mouseup', () => {
   }
   if (holdDuration < requiredDuration) {
     holdDuration = 0;
-    progressBar.style.width = '0%';
+    progressBar.style.transform = 'scaleX(0)';
     timerText.textContent = '3 segundos';
     confirmBtn.classList.remove('holding');
   }
@@ -309,7 +314,7 @@ confirmBtn.addEventListener('mouseleave', () => {
     }
     if (holdDuration < requiredDuration) {
       holdDuration = 0;
-      progressBar.style.width = '0%';
+      progressBar.style.transform = 'scaleX(0)';
       timerText.textContent = '3 segundos';
       confirmBtn.classList.remove('holding');
     }
@@ -333,7 +338,7 @@ confirmBtn.addEventListener('touchend', () => {
   }
   if (holdDuration < requiredDuration) {
     holdDuration = 0;
-    progressBar.style.width = '0%';
+    progressBar.style.transform = 'scaleX(0)';
     timerText.textContent = '3 segundos';
     confirmBtn.classList.remove('holding');
   }

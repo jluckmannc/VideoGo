@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VídeoGo · Emergencia Activa</title>
 <style>
+@font-face{
+  font-family:"Geist";
+  font-display:swap;
+  src:local("Geist"),local("-apple-system"),local("system-ui");
+}
 :root {
   --bg: #0a0a14;
   --surface: #12121e;
@@ -188,8 +193,9 @@ body{
 .alarm-wave{
   position:absolute;width:100%;height:100%;border:2px solid currentColor;
   border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);
-  opacity:0;animation:wave-expand 1s ease-out infinite;
+  opacity:0;animation:none;
 }
+.alarm-btn.active .alarm-wave{animation:wave-expand 1s ease-out infinite}
 .alarm-btn.active .alarm-wave:nth-child(2){animation-delay:0.3s}
 .alarm-btn.active .alarm-wave:nth-child(3){animation-delay:0.6s}
 @keyframes wave-expand {
@@ -212,24 +218,24 @@ body{
 .cancel-sos-btn-floating{
   position:fixed;
   bottom:72px;
-  right:20px;
-  width:64px;
-  height:64px;
+  right:16px;
+  width:80px;
+  height:80px;
   border-radius:50%;
   background:var(--danger);
   color:white;
   border:none;
-  font-size:9px;
+  font-size:10px;
   font-weight:600;
   box-shadow:0 4px 12px rgba(220,38,38,0.3),0 0 0 1px rgba(220,38,38,0.5);
-  z-index:100;
+  z-index:101;
   cursor:pointer;
   transition:opacity var(--motion-base),transform var(--motion-fast);
   display:flex;
   align-items:center;
   justify-content:center;
   flex-direction:column;
-  gap:4px;
+  gap:6px;
 }
 .cancel-sos-btn-floating:hover{
   opacity:0.9;
@@ -241,12 +247,12 @@ body{
 }
 .cancel-sos-btn-floating::before{
   content:'✕';
-  font-size:20px;
+  font-size:24px;
   font-weight:bold;
 }
 .cancel-sos-btn-floating::after{
   content:'CANCELAR';
-  font-size:8px;
+  font-size:9px;
   letter-spacing:0.05em;
 }
 .android-nav{
@@ -257,7 +263,7 @@ body{
 .android-nav svg{width:16px;height:16px;color:rgba(255,255,255,0.35)}
 .dialog-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(2px);
-  z-index:20;display:none;align-items:center;justify-content:center;
+  z-index:200;display:none;align-items:center;justify-content:center;
 }
 .dialog-overlay.active{display:flex}
 .cancel-dialog{
